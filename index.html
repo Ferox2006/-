@@ -50,6 +50,14 @@
     <a href="tips.html" class="nav-link">Советы для поездок</a>
 
     <script>
+        // Функция для проверки валидности email
+        function validateEmail(email) {
+            // Регулярное выражение для проверки email
+            const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            return regex.test(email);
+        }
+
+        // Обработчик отправки формы
         document.getElementById('feedbackForm').addEventListener('submit', function(event) {
             event.preventDefault();
             
@@ -57,39 +65,44 @@
             document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
             document.getElementById('success-message').textContent = '';
             
-            // Валидация
-            let isValid = true;
+            // Получение значений полей
             const name = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
             const message = document.getElementById('message').value.trim();
             
+            let isValid = true;
+
+            // Проверка имени
             if (!name) {
                 document.getElementById('name-error').textContent = 'Пожалуйста, введите имя';
                 isValid = false;
             }
             
+            // Проверка email
             if (!email) {
                 document.getElementById('email-error').textContent = 'Пожалуйста, введите email';
                 isValid = false;
-            } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-                document.getElementById('email-error').textContent = 'Введите корректный email';
+            } else if (!validateEmail(email)) {
+                document.getElementById('email-error').textContent = 'Введите корректный email (пример: user@example.com)';
                 isValid = false;
             }
             
+            // Проверка сообщения
             if (!message) {
                 document.getElementById('message-error').textContent = 'Пожалуйста, введите сообщение';
                 isValid = false;
             }
             
+            // Если все проверки пройдены
             if (isValid) {
                 document.getElementById('success-message').textContent = 'Спасибо! Ваше сообщение отправлено.';
                 document.getElementById('success-message').style.display = 'block';
                 document.getElementById('feedbackForm').reset();
                 
+                // Скрываем сообщение через 5 секунд
                 setTimeout(() => {
                     document.getElementById('success-message').style.display = 'none';
-                }, 5000);
-            }
+                }, 5000);}
         });
     </script>
 </body>
