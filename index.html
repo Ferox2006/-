@@ -20,6 +20,77 @@
         <img src="горы.jpg" alt="Горы">
     </div>
 
+    <div class="feedback-form">
+        <h2>Обратная связь</h2>
+        <p>Есть вопросы или предложения? Напишите нам!</p>
+        <form id="feedbackForm">
+            <div class="form-group">
+                <label for="name">Имя:</label>
+                <input type="text" id="name" name="name" required>
+                <span class="error-message" id="name-error"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <span class="error-message" id="email-error"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="message">Сообщение:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+                <span class="error-message" id="message-error"></span>
+            </div>
+            
+            <button type="submit" class="submit-btn">Отправить</button>
+        </form>
+        <div id="success-message" class="success-message"></div>
+    </div>
+
     <a href="tips.html" class="nav-link">Советы для поездок</a>
+
+    <script>
+        document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Сброс предыдущих ошибок
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+            document.getElementById('success-message').textContent = '';
+            
+            // Валидация
+            let isValid = true;
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+            
+            if (!name) {
+                document.getElementById('name-error').textContent = 'Пожалуйста, введите имя';
+                isValid = false;
+            }
+            
+            if (!email) {
+                document.getElementById('email-error').textContent = 'Пожалуйста, введите email';
+                isValid = false;
+            } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+                document.getElementById('email-error').textContent = 'Введите корректный email';
+                isValid = false;
+            }
+            
+            if (!message) {
+                document.getElementById('message-error').textContent = 'Пожалуйста, введите сообщение';
+                isValid = false;
+            }
+            
+            if (isValid) {
+                document.getElementById('success-message').textContent = 'Спасибо! Ваше сообщение отправлено.';
+                document.getElementById('success-message').style.display = 'block';
+                document.getElementById('feedbackForm').reset();
+                
+                setTimeout(() => {
+                    document.getElementById('success-message').style.display = 'none';
+                }, 5000);
+            }
+        });
+    </script>
 </body>
 </html>
